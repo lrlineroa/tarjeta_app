@@ -9,7 +9,10 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, PixelRatio, Text } from 'react-native';
 import { Constants } from 'expo';
 import Values from '../common/Values';
-import { Content, Form, Item, Label, Input, Button } from 'native-base';
+import { Content, Form, Item, Label, Input } from 'native-base';
+import { Button } from 'react-native-elements';
+
+
 
 
 
@@ -38,34 +41,55 @@ class Login extends Component {
         </View>
         <View style={styles.formContainer}>
           <View style={[styles.formTitle, Values.styles.centered]}>
-            <Text style={[styles.formText,styles.marginEqual]}>
+            <Text style={[styles.formText, styles.marginEqual]}>
               BIENVENIDOS A UN MUNDO DE BENEFICIOS
             </Text>
           </View>
-          <View style={[styles.form]}>
-            <Content>
-              <Form style={
-                [styles.marginEqual]
-              }>
-                <Item style={styles.formInput} floatingLabel>
-                  <Label style={[styles.formText,styles.marginBottom]}>Correo o teléfono</Label>
-                  <Input style={[styles.formText]} form/>
-                </Item>
-                <Item style={styles.formInput} floatingLabel>
-                  <Label style={[styles.formText,styles.marginBottom]}>Clave</Label>
-                  <Input style={[styles.formText]} secureTextEntry={true}/>
-                </Item>
-                <Button style={styles.loginButton} textStyle={{color:'red'}} block light>
-                  <Text> Ingresar </Text>
-                </Button>
-              </Form>
-            </Content>
+
+          <View style={
+            [styles.form, Values.styles.centered, styles.marginEqual]
+          }>
+            <Item style={styles.formInput} floatingLabel>
+              <Label style={[styles.formText, styles.marginBottom]}>Correo o teléfono</Label>
+              <Input style={[styles.formText]} form />
+            </Item>
+            <Item style={styles.formInput} floatingLabel>
+              <Label style={[styles.formText, styles.marginBottom]}>Clave</Label>
+              <Input style={[styles.formText]} secureTextEntry={true} />
+            </Item>
+            <Button
+              containerStyle={{ alignSelf: 'stretch' }}
+              titleStyle={[styles.formText, { color: 'red' }]}
+              buttonStyle={[styles.loginButton]}
+              title="Ingresa"
+            />
           </View>
         </View>
         <View style={styles.socialLoginContainer}>
-
+          <View style={
+            [styles.form, Values.styles.centered, styles.marginEqual]
+          }>
+            <Button
+              containerStyle={{ alignSelf: 'stretch' }}
+              titleStyle={[styles.formText, { color: 'red' }]}
+              buttonStyle={[styles.loginButton]}
+              title="Ingresa con Facebook"
+            />
+            <Button
+              containerStyle={{ alignSelf: 'stretch' }}
+              titleStyle={[styles.formText, { color: 'red' }]}
+              buttonStyle={[styles.loginButton]}
+              title="Ingresa con Twitter"
+            />
+            <Button
+              containerStyle={{ alignSelf: 'stretch' }}
+              titleStyle={[styles.formText, { color: 'red' }]}
+              buttonStyle={[styles.loginButton]}
+              title="Ingresa con Google"
+            />
+          </View>
         </View>
-      </View>
+      </View >
     );
   }
 }
@@ -98,28 +122,31 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
   },
-  formInput:{
-    borderColor:'white',
-    padding:5,
-    color:'white'
+  formInput: {
+    borderColor: 'white',
+    padding: 5,
+    color: 'white'
   },
-  loginButton:{
-    color:'red',
-    marginTop:PixelRatio.getPixelSizeForLayoutSize(5)
+  loginButton: {
+
+    backgroundColor: 'white',
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(5)
   },
   socialLoginContainer: {
     flex: 0.66,
-    
+
   },
-  marginEqual:{
+  marginEqual: {
     marginLeft: PixelRatio.getPixelSizeForLayoutSize(20),
     marginRight: PixelRatio.getPixelSizeForLayoutSize(20),
   },
-  marginBottom:{
+  marginBottom: {
     marginBottom: PixelRatio.getPixelSizeForLayoutSize(2)
   },
- 
+
 
 });
+
+
 
 export default Login;
