@@ -86,6 +86,10 @@ class Login extends Component {
               titleStyle={[styles.formText, { color: 'red' }]}
               buttonStyle={[styles.loginButton]}
               title="Ingresa con Google"
+              icon={{
+                name: 'google',
+                color: 'red',
+              }}
             />
           </View>
         </View>
@@ -102,8 +106,8 @@ const styles = StyleSheet.create({
 
   },
   logo: {
-    width: PixelRatio.getPixelSizeForLayoutSize(126),
-    height: PixelRatio.getPixelSizeForLayoutSize(35),
+    width: 126,//PixelRatio.getPixelSizeForLayoutSize(126),
+    height: 35//PixelRatio.getPixelSizeForLayoutSize(35),
   },
   logoContainer: {
     flex: 0.46
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
   formText: {
     textAlign: 'center',
     color: 'white',
-    fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
+    fontSize:10// fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
   },
   formInput: {
     borderColor: 'white',
@@ -130,18 +134,18 @@ const styles = StyleSheet.create({
   loginButton: {
 
     backgroundColor: 'white',
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(5)
+    marginTop: 5//PixelRatio.getPixelSizeForLayoutSize(5)
   },
   socialLoginContainer: {
     flex: 0.66,
 
   },
   marginEqual: {
-    marginLeft: PixelRatio.getPixelSizeForLayoutSize(20),
-    marginRight: PixelRatio.getPixelSizeForLayoutSize(20),
+    marginLeft: 20,// PixelRatio.getPixelSizeForLayoutSize(20),
+    marginRight: 20//,PixelRatio.getPixelSizeForLayoutSize(20),
   },
   marginBottom: {
-    marginBottom: PixelRatio.getPixelSizeForLayoutSize(2)
+    marginBottom: 5//PixelRatio.getPixelSizeForLayoutSize(2)
   },
 
 
