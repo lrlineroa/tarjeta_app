@@ -6,10 +6,10 @@ import RegisterCard from './src/components/UI/QR/RegisterCard';
 import RegisterUserData from './src/components/UI/register/RegisterUserData';
 
 const MainNavigator = createStackNavigator({
-  RegisterUserData: { screen: RegisterUserData },
+  
   Login: { screen: Login },
   RegisterCard: { screen: RegisterCard },
-  
+  RegisterUserData: { screen: RegisterUserData },  
 },
   {
     /* The header config from HomeScreen is now here */
