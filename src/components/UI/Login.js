@@ -7,10 +7,11 @@
 
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, PixelRatio, Text } from 'react-native';
-import { Constants } from 'expo';
+import Constants from 'expo-constants';
 import Values from '../common/Values';
-import { Content, Form, Item, Label, Input } from 'native-base';
+import { Item, Label, Input } from 'native-base';
 import { Button } from 'react-native-elements';
+import appConstants from '../common/AppConstants';
 
 
 
@@ -21,21 +22,28 @@ import { Button } from 'react-native-elements';
 class Login extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      header: null//navigation.getParam('otherParam', 'Home')
+      header: null
     }
 
   };
   constructor(props) {
     super(props);
-    this.state = {
 
-    }
   }
+
+  goTo(page, params = {}) {
+    const { navigate } = this.props.navigation;
+    navigate(page, params)
+    // alert("clicked")
+  }
+
+
   render() {
     return (
       <View
-        style={styles.container}
+        style={[Values.styles.container,styles.container]}
       >
+
         <View style={[styles.logoContainer, Values.styles.centered]}>
           <Image style={styles.logo} source={require('./img/logo.png')} />
         </View>
@@ -60,39 +68,39 @@ class Login extends Component {
             <Button
               containerStyle={{ alignSelf: 'stretch' }}
               titleStyle={[styles.formText, { color: 'red' }]}
-              buttonStyle={[styles.loginButton]}
+              buttonStyle={[styles.btn]}
               title="Ingresa"
             />
           </View>
         </View>
         <View style={styles.socialLoginContainer}>
           <View style={
-            [styles.form, Values.styles.centered, styles.marginEqual]
+            [styles.form, { alignItems: 'center' }, styles.marginEqual]
           }>
             <Button
               containerStyle={{ alignSelf: 'stretch' }}
-              titleStyle={[styles.formText, { color: 'red' }]}
-              buttonStyle={[styles.loginButton]}
+              titleStyle={[styles.formText, { color: 'white' }]}
+              buttonStyle={[styles.btn, { backgroundColor: '#3B5998' }]}
               title="Ingresa con Facebook"
             />
             <Button
               containerStyle={{ alignSelf: 'stretch' }}
-              titleStyle={[styles.formText, { color: 'red' }]}
-              buttonStyle={[styles.loginButton]}
-              title="Ingresa con Twitter"
-            />
-            <Button
-              containerStyle={{ alignSelf: 'stretch' }}
-              titleStyle={[styles.formText, { color: 'red' }]}
-              buttonStyle={[styles.loginButton]}
+              titleStyle={[styles.formText, { color: 'white' }]}
+              buttonStyle={[styles.btn, { backgroundColor: '#0F9D58' }]}
               title="Ingresa con Google"
-              icon={{
-                name: 'google',
-                color: 'red',
-              }}
+
             />
+
+            <Text
+              style={[styles.formText, { alignSelf: 'stretch' }, { marginTop: 20 }]}
+              onPress={() => this.goTo(appConstants.REGISTER_CARD, {})}
+            >
+              Registra <Text style={{ textDecorationLine: 'underline' }}>aquí</Text> tu tarjeta si aún no eres socio
+            </Text>
           </View>
         </View>
+
+
       </View >
     );
   }
@@ -100,14 +108,11 @@ class Login extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ff0000',
-
   },
   logo: {
-    width: 126,//PixelRatio.getPixelSizeForLayoutSize(126),
-    height: 35//PixelRatio.getPixelSizeForLayoutSize(35),
+    width: 224,//PixelRatio.getPixelSizeForLayoutSize(126),
+    height: 62//PixelRatio.getPixelSizeForLayoutSize(35),
   },
   logoContainer: {
     flex: 0.46
@@ -122,18 +127,19 @@ const styles = StyleSheet.create({
     flex: 1
   },
   formText: {
+    fontFamily: 'segoeuil',
     textAlign: 'center',
     color: 'white',
-    fontSize:10// fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
+    fontSize: 20// fontSize: PixelRatio.getPixelSizeForLayoutSize(10),
   },
   formInput: {
     borderColor: 'white',
     padding: 5,
     color: 'white'
   },
-  loginButton: {
-
+  btn: {
     backgroundColor: 'white',
+    height: 33,
     marginTop: 5//PixelRatio.getPixelSizeForLayoutSize(5)
   },
   socialLoginContainer: {
@@ -141,11 +147,11 @@ const styles = StyleSheet.create({
 
   },
   marginEqual: {
-    marginLeft: 20,// PixelRatio.getPixelSizeForLayoutSize(20),
-    marginRight: 20//,PixelRatio.getPixelSizeForLayoutSize(20),
+    marginLeft: 68, //cambió con respecto a XD
+    marginRight: 68,//cambió con respecto a XD
   },
   marginBottom: {
-    marginBottom: 5//PixelRatio.getPixelSizeForLayoutSize(2)
+    marginBottom: 2//PixelRatio.getPixelSizeForLayoutSize(2)
   },
 
 
