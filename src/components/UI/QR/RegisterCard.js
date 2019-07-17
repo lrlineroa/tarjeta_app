@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 import { Permissions, BarCodeScanner } from 'expo';
 import Values from '../../common/Values';
 import appConstants from '../../common/AppConstants';
+import Constants from 'expo-constants';
+import privateKeyJson from "../../../../keys/dev_private_key.json"
 class RegisterCard extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +12,8 @@ class RegisterCard extends Component {
             hasCameraPermission: null,
             scanned: false,
         }
+        
+        
     }
     async componentDidMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -25,9 +29,9 @@ class RegisterCard extends Component {
     goTo(page, params = {}) {
         const { navigate } = this.props.navigation;
         navigate(page, params)
-    } 
+    }
     handleBarCodeScanned = ({ type, data }) => {
-        
+
         this.setState({
             scanned:true
         })
@@ -54,11 +58,12 @@ class RegisterCard extends Component {
 
         }
         return (<View style={[Values.styles.container]}>
-            <View style={styles.qrReaderContainer}>
-                <BarCodeScanner
+            <BarCodeScanner
                     onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
                     style={StyleSheet.absoluteFill}
                 />
+            <View style={styles.qrReaderContainer}>
+                <Image style={styles.qrFrame} source={require('../img/qrFrame.png')} />
             </View>
             <View style={styles.imageContainer}>
                 <Text style={[styles.title, styles.marginEqual]}>Apunta con tu cámara al código que figura en tu tarjeta</Text>
@@ -69,12 +74,20 @@ class RegisterCard extends Component {
 }
 const styles = StyleSheet.create({
     qrReaderContainer: {
-        alignSelf: 'stretch',
-        height: 300, //cambió con respecto a XD
-        backgroundColor: 'red'
+        paddingTop: Constants.statusBarHeight,
+        flex:1,
+        height: 320, //cambió con respecto a XD
+        //justifyContent: 'center',
+        alignItems: 'center',
+    },
+    qrFrame:{
+        alignSelf:'center',
+        height:254,//cambió con respecto a XD
+        width:250.98,//cambió con respecto a XD
     },
     imageContainer: {
-        flex: 1
+        flex: 1,
+        backgroundColor:'white'
     },
     title: {
         paddingTop: 18,

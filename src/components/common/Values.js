@@ -14,6 +14,10 @@ export default values = {
             fontSize:20,
             fontFamily: 'segoeuil',
         },
+        appText:{
+            fontSize:20,
+            fontFamily: 'segoeuil',
+        }
     }),
 
 }

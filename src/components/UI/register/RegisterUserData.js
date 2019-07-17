@@ -3,6 +3,7 @@ import Values from "../../common/Values";
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { Item, Label, Input } from 'native-base';
 import { Button } from 'react-native-elements';
+import appConstants from '../../common/AppConstants';
 class RegisterUserData extends Component {
 
     static navigationOptions = ({ navigation }) => {
@@ -14,6 +15,9 @@ class RegisterUserData extends Component {
     constructor(props) {
         super(props);
         this.state = {}
+    }
+    goTo(page){
+        this.props.navigation.navigate(page);
     }
     render() {
         return (
@@ -51,7 +55,10 @@ class RegisterUserData extends Component {
                         titleStyle={[styles.formText, { color: 'red' }]}
                         buttonStyle={[styles.btn]}
                         onPress={
-                            ()=>alert("Que bien, te registraste")
+                            ()=>{
+                                alert("Que bien, te registraste")
+                                this.goTo(appConstants.DRAWER_HOME)
+                            }
                         }
                         title="Registrarse"
                     />
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
     },
     logo: {
         marginTop: 58,
-        marginBottom:15, //cambió respecto a XD
+        marginBottom:28, //cambió respecto a XD
         alignSelf: 'center',
         width: 224,//PixelRatio.getPixelSizeForLayoutSize(126),
         height: 62//PixelRatio.getPixelSizeForLayoutSize(35),
