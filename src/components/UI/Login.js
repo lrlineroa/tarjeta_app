@@ -12,13 +12,11 @@ import Values from '../common/Values';
 import { Item, Label, Input } from 'native-base';
 import { Button } from 'react-native-elements';
 import appConstants from '../common/AppConstants';
-
-
-
-
+import Loader from '../common/Loader';
+import * as SecureStore from 'expo-secure-store';
 
 /* Adobe XD React Exporter has dropped some elements not supported by react-native-svg: style */
-
+const loadingStatus=["Cargando datos del usuario",'ok']
 class Login extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -28,7 +26,20 @@ class Login extends Component {
   };
   constructor(props) {
     super(props);
-
+    this.state={
+      loadingStatusIndex:0
+    }
+    this.checkUserData();
+  }
+  async checkUserData(){
+   let userInfo=JSON.parse(await SecureStore.getItemAsync(appConstants.USER_INFO));
+   if(userInfo!= null && userInfo.user){
+     this.goTo(appConstants.DRAWER_HOME);
+   }else{
+     this.setState({
+      loadingStatusIndex:1
+     })
+   }
   }
 
   goTo(page, params = {}) {
@@ -39,6 +50,9 @@ class Login extends Component {
 
 
   render() {
+    if(this.state.loadingStatusIndex==0){
+      return(<Loader message={loadingStatus[this.state.loadingStatusIndex]}/>)
+    }
     return (
       <View
         style={[Values.styles.container,styles.container]}
@@ -135,7 +149,8 @@ const styles = StyleSheet.create({
   formInput: {
     borderColor: 'white',
     padding: 5,
-    color: 'white'
+    color: 'white',
+    marginBottom:5,
   },
   btn: {
     backgroundColor: 'white',

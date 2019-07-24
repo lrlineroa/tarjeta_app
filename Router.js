@@ -7,13 +7,11 @@ import DrawerHome from './src/components/UI/DrawerHome';
 import BenefitInfo from './src/components/UI/benefits/BenefitInfo';
 
 const MainNavigator = createStackNavigator({
-  
-  DrawerHome:{screen: DrawerHome},
   Login: { screen: Login },
+  RegisterUserData: { screen: RegisterUserData },
+  DrawerHome: { screen: DrawerHome },
+  BenefitInfo: { screen: BenefitInfo },
   RegisterCard: { screen: RegisterCard },
-  BenefitInfo:{screen:BenefitInfo},
-  RegisterUserData: { screen: RegisterUserData },  
-  
 },
   {
     /* The header config from HomeScreen is now here */

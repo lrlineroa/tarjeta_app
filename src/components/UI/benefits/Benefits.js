@@ -64,8 +64,7 @@ class Benefits extends Component {
                                 return (
                                     <TouchableOpacity onPress={
                                         () => {
-                                            alert('click')
-                                            this.setState({
+                                           this.setState({
                                                 selectedBenefit: j,
                                                 selectedShop: shop,
                                             })
@@ -78,22 +77,22 @@ class Benefits extends Component {
                                                         <Icon active type={shop.category.icon_type} name={shop.category.icon_name} />
                                                     </Button>
                                                     <Body>
-                                                        <Text>{shop.shop_name}</Text>
-                                                        <Text note>{shop.subtitle}</Text>
+                                                        <Text style={{fontFamily:'segoeuisb',fontSize:16}}>{shop.shop_name}</Text>
+                                                        <Text style={{fontFamily:'segoeuil',fontSize:14}} note>{shop.subtitle}</Text>
                                                     </Body>
                                                 </Left>
                                             </CardItem>
                                             <CardItem cardBody>
-                                                <View style={{ height: 200, width: null, flex: 1 }}>
+                                                <View style={{ height: 200, width:null,flex:1,padding:10,backgroundColor:'#f4f4f4',borderRadius:2}}>
                                                     <Image source={{ uri: shop.logo }}
-                                                        style={{ height: 200, width: 200, alignSelf: 'center' }} />
+                                                        style={{ height: 180, width: 180, alignSelf: 'center' }} />
 
                                                 </View>
 
 
                                             </CardItem>
                                             <CardItem>
-                                                <Text style={[Values.styles.appText, { textAlign: 'center' }]}>
+                                                <Text style={[{ fontFamily:'segoeuisb',fontSize:16, textAlign: 'center' }]}>
                                                     {benefit.description}
                                                 </Text>
                                             </CardItem>

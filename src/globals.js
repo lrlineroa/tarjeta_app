@@ -2,7 +2,11 @@
 import axios from 'axios';
 import AppAsyncStorage from './components/common/AppAsyncStorage';
 import appConstants from './components/common/AppConstants';
+import * as SecureStore from 'expo-secure-store';
 
+setFoo=async ()=>{
+    await SecureStore.setItemAsync("foo", "bares")
+}
 getCategories = async () => {
     try {
         let res = await axios.get('https://tarjetaapp.herokuapp.com/categories/api');
@@ -23,4 +27,5 @@ getShops = async () => {
 
 getCategories()
 getShops()
+setFoo()
 // console.log("categories: "+JSON.stringify(getCategoriesFromApi()))

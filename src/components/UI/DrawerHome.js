@@ -12,6 +12,21 @@ const MyDrawerNavigator = createDrawerNavigator({
     Perfil: {
       screen: Profile,
     },
+    Favoritos: {
+      screen: Profile,
+    },
+    "Mis puntos": {
+      screen: Profile,
+    },
+    Historial: {
+      screen: Profile,
+    },
+    Mapa: {
+      screen: Profile,
+    },
+    "Cerrar sesión": {
+      screen: Profile,
+    },
   });
   
 const MyDrawer = createAppContainer(MyDrawerNavigator);
