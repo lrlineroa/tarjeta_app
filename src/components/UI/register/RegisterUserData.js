@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Values from "../../common/Values";
-import { ScrollView, View, Text, StyleSheet, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
 import { Item, Label, Input, Right, Icon, Button as Btn } from 'native-base';
 import { Button } from 'react-native-elements';
 import appConstants from '../../common/AppConstants';
@@ -28,7 +28,7 @@ class RegisterUserData extends Component {
                 phone_number: '',
                 password: '',
             },
-            isLoading:false
+            isLoading: false
         }
     }
     onChangeText(value, field) {
@@ -41,7 +41,7 @@ class RegisterUserData extends Component {
     }
     async doRegister() {
         this.setState({
-            isLoading:true
+            isLoading: true
         })
         try {
             let data = this.state.userData;
@@ -51,13 +51,13 @@ class RegisterUserData extends Component {
                 phone_number: data.phone_number,
                 password: data.password
             }
-            let response=await Axios.post('https://tarjetaapp.herokuapp.com/users/api'
+            let response = await Axios.post('https://tarjetaapp.herokuapp.com/users/api'
                 , data2Send)
-            if(response.data.token){
+            if (response.data.token) {
                 await SecureStore.setItemAsync(appConstants.USER_INFO, JSON.stringify(response.data))
                 alert('que bien te registraste')
                 this.setState({
-                    isLoading:false
+                    isLoading: false
                 })
                 this.goTo(appConstants.DRAWER_HOME)
             }
@@ -69,91 +69,95 @@ class RegisterUserData extends Component {
         this.props.navigation.navigate(page);
     }
     render() {
-        if(this.state.isLoading){
-            return (<Loader message='Registrandote...'/>)
+        if (this.state.isLoading) {
+            return (<Loader message='Registrandote...' />)
         }
         return (
-            <ScrollView style={[Values.styles.container, styles.container]}>
-                <Image style={styles.logo} source={require('../img/logo.png')} />
-                <Text style={[styles.formText, styles.marginEqual]}>
-                    REGÍSTRATE PARA EMPEZAR A DISFRUTAR
+            <KeyboardAvoidingView style={[Values.styles.container]} behavior="padding" enabled>
+                <ScrollView style={[{ flex: 1 }, styles.container]}>
+                    <Image style={styles.logo} source={require('../img/logo.png')} />
+                    <Text style={[styles.formText, styles.marginEqual]}>
+                        REGÍSTRATE PARA EMPEZAR A DISFRUTAR
                 </Text>
-                <View style={[styles.marginEqual, { flex: 1 }]}>
-                    <Item style={styles.formInput} floatingLabel>
-                        <Label style={[styles.formText, styles.marginBottom]}>Nombre</Label>
-                        <Input
-                            value={this.state.userData['first_name']}
-                            onChangeText={
-                                text => { this.onChangeText(text, 'first_name') }
-                            }
-                            style={[styles.formText]} form />
-                    </Item>
-                    <Item style={styles.formInput} floatingLabel>
-                        <Label style={[styles.formText, styles.marginBottom]}>Apellido</Label>
-                        <Input
-                            value={this.state.userData['last_name']}
-                            onChangeText={
-                                text => { this.onChangeText(text, 'last_name') }
-                            }
-                            style={[styles.formText]} form />
-                    </Item>
+                    <View style={[styles.marginEqual, { flex: 1 }]}>
+                        <Item style={styles.formInput} floatingLabel>
+                            <Label style={[styles.formText, styles.marginBottom]}>Nombre</Label>
+                            <Input
+                                value={this.state.userData['first_name']}
+                                onChangeText={
+                                    text => { this.onChangeText(text, 'first_name') }
+                                }
+                                style={[styles.formText]} form />
+                        </Item>
+                        <Item style={styles.formInput} floatingLabel>
+                            <Label style={[styles.formText, styles.marginBottom]}>Apellido</Label>
+                            <Input
+                                value={this.state.userData['last_name']}
+                                onChangeText={
+                                    text => { this.onChangeText(text, 'last_name') }
+                                }
+                                style={[styles.formText]} form />
+                        </Item>
 
-                    <Item style={styles.formInput} floatingLabel>
-                        <Label style={[styles.formText, styles.marginBottom]}>Correo electrónico</Label>
-                        <Input
-                            value={this.state.userData['email']}
-                            onChangeText={
-                                text => { this.onChangeText(text, 'email') }
-                            }
-                            style={[styles.formText]} form />
-                    </Item>
+                        <Item style={styles.formInput} floatingLabel>
+                            <Label style={[styles.formText, styles.marginBottom]}>Correo electrónico</Label>
+                            <Input
+                                value={this.state.userData['email']}
+                                onChangeText={
+                                    text => { this.onChangeText(text, 'email') }
+                                }
+                                style={[styles.formText]} form />
+                        </Item>
 
-                    <Item style={styles.formInput} floatingLabel>
-                        <Label style={[styles.formText, styles.marginBottom]}>Teléfono</Label>
-                        <Input
-                            value={this.state.userData['phone_number']}
-                            onChangeText={
-                                text => { this.onChangeText(text, 'phone_number') }
-                            }
-                            style={[styles.formText]} form />
-                    </Item>
+                        <Item style={styles.formInput} floatingLabel>
+                            <Label style={[styles.formText, styles.marginBottom]}>Teléfono</Label>
+                            <Input
+                                value={this.state.userData['phone_number']}
+                                onChangeText={
+                                    text => { this.onChangeText(text, 'phone_number') }
+                                }
+                                style={[styles.formText]} form />
+                        </Item>
+                        <View style={{flexDirection:'row',alignSelf: 'stretch' }}>
+                            <Item style={[styles.formInput,{flex:1}]} floatingLabel>
+                                <Label style={[styles.formText, styles.marginBottom]}>Clave</Label>
+                                <Input
+                                    value={this.state.userData['password']}
+                                    onChangeText={
+                                        text => { this.onChangeText(text, 'password') }
+                                    }
+                                    style={[styles.formText]} form secureTextEntry={this.state.secureTextEntry} />
 
-                    <Item style={styles.formInput} floatingLabel>
-                        <Label style={[styles.formText, styles.marginBottom]}>Clave</Label>
-                        <Input
-                            value={this.state.userData['password']}
-                            onChangeText={
-                                text => { this.onChangeText(text, 'password') }
-                            }
-                            style={[styles.formText]} form secureTextEntry={this.state.secureTextEntry} />
+                            </Item>
+                            <Btn
+                                onPress={() => {
+                                    this.setState({
+                                        secureTextEntry: !this.state.secureTextEntry
+                                    })
+                                }}
+                                transparent>
+                                <Icon name={this.state.secureTextEntry ? 'eye' : 'eye-off'} />
+                            </Btn>
 
-                    </Item>
-                    <Right>
-                        <Btn
-                            onPress={() => {
-                                this.setState({
-                                    secureTextEntry: !this.state.secureTextEntry
-                                })
-                            }}
-                            transparent>
-                            <Icon name={this.state.secureTextEntry ? 'eye' : 'eye-off'} />
-                        </Btn>
-                    </Right>
-                    <Button
-                        containerStyle={{ marginTop: 25, alignSelf: 'stretch' }}
-                        titleStyle={[styles.formText, { color: 'red' }]}
-                        buttonStyle={[styles.btn]}
-                        onPress={
-                            () => {
-                                
-                                this.doRegister()
-                            }
-                        }
-                        title="Registrarse"
-                    />
+                        </View>
 
-                </View>
-            </ScrollView>);
+                        <Button
+                            containerStyle={{ marginTop: 25, alignSelf: 'stretch' }}
+                            titleStyle={[styles.formText, { color: 'red' }]}
+                            buttonStyle={[styles.btn]}
+                            onPress={
+                                () => {
+
+                                    this.doRegister()
+                                }
+                            }
+                            title="Registrarse"
+                        />
+
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        );
     }
 }
 

@@ -14,9 +14,11 @@ import { Button } from 'react-native-elements';
 import appConstants from '../common/AppConstants';
 import Loader from '../common/Loader';
 import * as SecureStore from 'expo-secure-store';
+import Axios from 'axios';
+import { NavigationEvents } from 'react-navigation';
 
 /* Adobe XD React Exporter has dropped some elements not supported by react-native-svg: style */
-const loadingStatus=["Cargando datos del usuario",'ok']
+const loadingStatus = ["Cargando datos del usuario", 'ok']
 class Login extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -26,20 +28,32 @@ class Login extends Component {
   };
   constructor(props) {
     super(props);
-    this.state={
-      loadingStatusIndex:0
+    this.state = {
+      loadingStatusIndex: 0,
+      userData: {
+        email: '',
+        password: '',
+      },
     }
     this.checkUserData();
   }
-  async checkUserData(){
-   let userInfo=JSON.parse(await SecureStore.getItemAsync(appConstants.USER_INFO));
-   if(userInfo!= null && userInfo.user){
-     this.goTo(appConstants.DRAWER_HOME);
-   }else{
-     this.setState({
-      loadingStatusIndex:1
-     })
-   }
+  onChangeText(value, field) {
+    let userDataCopy = {}
+    Object.assign(userDataCopy, this.state.userData);
+    userDataCopy[field] = value;
+    this.setState({
+      userData: userDataCopy
+    })
+  }
+  async checkUserData() {
+    let userInfo = JSON.parse(await SecureStore.getItemAsync(appConstants.USER_INFO));
+    if (userInfo != null && userInfo.user) {
+      this.goTo(appConstants.DRAWER_HOME);
+    } else {
+      this.setState({
+        loadingStatusIndex: 1
+      })
+    }
   }
 
   goTo(page, params = {}) {
@@ -47,15 +61,84 @@ class Login extends Component {
     navigate(page, params)
     // alert("clicked")
   }
+  async login() {
+    this.setState({
+      isLoading: true
+    })
+    try {
+      let response = await Axios.post('https://tarjetaapp.herokuapp.com/users/api/auth/signin'
+        , this.state.userData)
+      if (response.data.token) {
+        await SecureStore.setItemAsync(appConstants.USER_INFO, JSON.stringify(response.data))
+        alert('Bienvenido, ' + response.data.user.name)
+        this.setState({
+          isLoading: false
+        })
+        this.goTo(appConstants.DRAWER_HOME)
+      }
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+        /*
+         * The request was made and the server responded with a
+         * status code that falls out of the range of 2xx
+         */
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+        switch (error.response.status) {
+          case 400:
+            alert('lo sentimos no hay coincidencias');
+            this.setState({
+              userData: {
+                email: '',
+                password: '',
+              }
+            })
+            break;
+          default:
+            alert('un error ha ocurrido');
+            break;
+        }
+      } else if (error.request) {
+        /*
+         * The request was made but no response was received, `error.request`
+         * is an instance of XMLHttpRequest in the browser and an instance
+         * of http.ClientRequest in Node.js
+         */
+        //console.log(error.request.response);
+        alert('No estás conectado a internet');
+        this.setState({
+          userData: {
+            email: '',
+            password: '',
+          }
+        })
+      } else {
+        // Something happened in setting up the request and triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
 
+    }
+  }
 
   render() {
-    if(this.state.loadingStatusIndex==0){
-      return(<Loader message={loadingStatus[this.state.loadingStatusIndex]}/>)
+    if (this.state.loadingStatusIndex == 0) {
+      return (
+        <View style={[Values.styles.container]}>
+          <NavigationEvents
+            onWillFocus={payload => console.log('will focus', payload)}
+            onDidFocus={() => this.checkUserData()}
+            onWillBlur={payload => console.log('will blur', payload)}
+            onDidBlur={payload => console.log('did blur', payload)}
+          />
+          <Loader message={loadingStatus[this.state.loadingStatusIndex]} />
+        </View>)
     }
     return (
       <View
-        style={[Values.styles.container,styles.container]}
+        style={[Values.styles.container, styles.container]}
       >
 
         <View style={[styles.logoContainer, Values.styles.centered]}>
@@ -73,16 +156,31 @@ class Login extends Component {
           }>
             <Item style={styles.formInput} floatingLabel>
               <Label style={[styles.formText, styles.marginBottom]}>Correo o teléfono</Label>
-              <Input style={[styles.formText]} form />
+              <Input value={this.state.userData['email']}
+                onChangeText={
+                  (text) => {
+                    this.onChangeText(text, 'email')
+                  }
+                } style={[styles.formText]} form />
             </Item>
             <Item style={styles.formInput} floatingLabel>
               <Label style={[styles.formText, styles.marginBottom]}>Clave</Label>
-              <Input style={[styles.formText]} secureTextEntry={true} />
+              <Input value={this.state.userData['password']}
+                onChangeText={
+                  (text) => {
+                    this.onChangeText(text, 'password')
+                  }
+                } style={[styles.formText]} secureTextEntry={true} />
             </Item>
             <Button
               containerStyle={{ alignSelf: 'stretch' }}
               titleStyle={[styles.formText, { color: 'red' }]}
               buttonStyle={[styles.btn]}
+              onPress={
+                () => {
+                  this.login();
+                }
+              }
               title="Ingresa"
             />
           </View>
@@ -150,7 +248,7 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     padding: 5,
     color: 'white',
-    marginBottom:5,
+    marginBottom: 5,
   },
   btn: {
     backgroundColor: 'white',

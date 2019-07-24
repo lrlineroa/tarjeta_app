@@ -1,10 +1,11 @@
-import { Text, StyleSheet, } from 'react-native';
+import { Text, StyleSheet, View, } from 'react-native';
 import React, { Component } from 'react';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import Categories from './benefits/Categories';
 import Benefits from './benefits/Benefits';
 import { Header, Container, Button, Icon, Left, Body, Title } from 'native-base';
 import * as SecureStore from 'expo-secure-store';
+import Values from '../common/Values';
 class Home extends Component {
     static navigationOptions = {
         drawerLabel: 'Tarjeta APP',
@@ -19,7 +20,7 @@ class Home extends Component {
             ],
         };
         // this.getFoo();
-        
+
     }
     // async getFoo(){
     //     let bar=await SecureStore.getItemAsync('foo');
@@ -35,39 +36,41 @@ class Home extends Component {
             )}
             indicatorStyle={{ backgroundColor: 'red' }}
             style={{
-                height:55,
+                height: 55,
                 backgroundColor: '#fefafa',
             }}
         />;
     render() {
         return (
-            <Container>
-                <Header style={{ backgroundColor: 'red' }}>
-                    <Left>
-                        <Button onPress={() => {
-                            this.props.navigation.openDrawer()
-                        }} transparent>
-                            <Icon name='menu' />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title style={{ fontFamily: 'segoeuil' }}>Tarjeta App</Title>
-                    </Body>
+            <View style={Values.styles.container}>
+                <Container>
+                    <Header style={{ backgroundColor: 'red' }}>
+                        <Left>
+                            <Button onPress={() => {
+                                this.props.navigation.openDrawer()
+                            }} transparent>
+                                <Icon name='menu' />
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Title style={{ fontFamily: 'segoeuil' }}>Tarjeta App</Title>
+                        </Body>
 
-                </Header>
+                    </Header>
 
-                <TabView
+                    <TabView
 
-                    renderTabBar={this.tabBar}
-                    navigationState={this.state}
-                    renderScene={SceneMap({
-                        first: Categories,
-                        second: Benefits
-                    })}
-                    onIndexChange={index => this.setState({ index })}
-                    initialLayout={styles.tabView}
-                />
-            </Container>
+                        renderTabBar={this.tabBar}
+                        navigationState={this.state}
+                        renderScene={SceneMap({
+                            first: Categories,
+                            second: Benefits
+                        })}
+                        onIndexChange={index => this.setState({ index })}
+                        initialLayout={styles.tabView}
+                    />
+                </Container>
+            </View>
         );
     }
 }

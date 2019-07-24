@@ -9,11 +9,12 @@ import BenefitInfo from './src/components/UI/benefits/BenefitInfo';
 const MainNavigator = createStackNavigator({
   Login: { screen: Login },
   RegisterUserData: { screen: RegisterUserData },
-  DrawerHome: { screen: DrawerHome },
+  DrawerHome: DrawerHome,
   BenefitInfo: { screen: BenefitInfo },
   RegisterCard: { screen: RegisterCard },
 },
   {
+    headerMode:'none',
     /* The header config from HomeScreen is now here */
     defaultNavigationOptions: {
       headerStyle: {

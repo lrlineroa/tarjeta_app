@@ -7,12 +7,20 @@ import axios from 'axios';
 import Constants from 'expo-constants';
 import Values from './src/components/common/Values';
 import AppAsyncStorage from './src/components/common/AppAsyncStorage';
-//require('./src/globals')
+import Loader from './src/components/common/Loader';
+
+const LoadingStatus = [
+  "Cargando Fuentes",
+  "Cargando Información",
+  "Revisando Actualizaciones",
+  "ok"
+]
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fontLoaded: false,
+      LoadingStatusIndex: 0,
       checkVersionStatus: appConstants.UNCHECKED
     }
   }
@@ -23,9 +31,14 @@ export default class App extends React.Component {
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
+    this.setState({
+      LoadingStatusIndex: 1
+    });
     await this.getCategories()
     await this.getShops()
-    this.setState({ fontLoaded: true });
+    this.setState({
+      LoadingStatusIndex: 2
+    });
   }
 
   getCategories = async () => {
@@ -75,53 +88,63 @@ export default class App extends React.Component {
 
   }
   render() {
-    if (this.state.fontLoaded) {
-      switch (this.state.checkVersionStatus) {
-        case appConstants.UNCHECKED:
-          this.checkAppVersion();
-          return (
-            <View style={styles.container}>
-              <ActivityIndicator size='large' />
-              <Text style={Values.styles.appText}>Revisando Actualizaciones</Text>
-            </View>
-          )
-        case appConstants.NEEDS_UPDATE:
-          return (
-            <View style={[Values.styles.container, Values.styles.centered]}>
-              <Text style={Values.styles.appText}>Necesitamos una actualización :)</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  Linking.openURL('https://play.google.com/store/apps/details?id=com.cerezabusiness.tarjetaapp')
-                }}
-                style={styles.btn}
-              >
-                <Text style={Values.styles.appText}>
-                  Ir a Google Play
-                </Text>
-              </TouchableOpacity>
-            </View>
-          );
-        case appConstants.UP_TO_DATE:
+    switch (this.state.LoadingStatusIndex) {
+      case 0:
+        return (
+          <View style={styles.container}>
+            <ActivityIndicator size='large' />
+            <Text>{LoadingStatus[this.state.LoadingStatusIndex]}</Text>
+          </View>
+        );
+      case 1:
+        return (
+          <Loader message={LoadingStatus[this.state.LoadingStatusIndex]} />
+        )
+      case 2:
+        switch (this.state.checkVersionStatus) {
+          case appConstants.UNCHECKED:
+            this.checkAppVersion();
+            return (
+              <Loader message={LoadingStatus[this.state.LoadingStatusIndex]}/>
+            )
+          case appConstants.NEEDS_UPDATE:
+            return (
+              <View style={[Values.styles.container, Values.styles.centered]}>
+                <Text style={Values.styles.appText}>Necesitamos una actualización :)</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    Linking.openURL('https://play.google.com/store/apps/details?id=com.cerezabusiness.tarjetaapp')
+                  }}
+                  style={styles.btn}
+                >
+                  <Text style={Values.styles.appText}>
+                    Ir a Google Play
+                    </Text>
+                </TouchableOpacity>
+              </View>
+            );
+          case appConstants.UP_TO_DATE:
 
-          return (
-            <Router />
-          );
+            return (
+              <Router />
+            );
 
 
-      }
+        }
+
+
+      default:
+        break;
     }
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size='large' />
-        <Text>Cargando fuentes...</Text>
-      </View>
-    );
-
-
 
   }
 
+
+
+
 }
+
+
 
 
 
